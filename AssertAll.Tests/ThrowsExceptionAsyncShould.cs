@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [Ignore]
     [TestClass]
-    public class ThrowsExceptionAsyncShould
+    public class ThrowsExceptionAsyncShould : TestBase
     {
         [TestMethod]
         public void PassWhenExceptionOfCorrectTypeIsThrown()
@@ -22,7 +21,7 @@ namespace AssertAll.Tests
         {
             AssertAll.ThrowsExceptionAsync<NotImplementedException>(async () => await ThrowContrivedException(false));
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
 
         [TestMethod]
@@ -30,7 +29,7 @@ namespace AssertAll.Tests
         {
             AssertAll.ThrowsExceptionAsync<NullReferenceException>(async () => await ThrowContrivedException(true));
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
 
         private async Task ThrowContrivedException(bool throwException)

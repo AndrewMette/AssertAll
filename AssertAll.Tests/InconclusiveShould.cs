@@ -1,17 +1,17 @@
-using System;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class InconclusiveShould
+    public class InconclusiveShould : TestBase
     {
         [TestMethod]
         public void ThrowAssertInconclusiveException()
         {
             AssertAll.Inconclusive("the test is inconclusive");
 
-            Assert.ThrowsException<AssertInconclusiveException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllInconclusiveException>(() => AssertAll.Execute());
         }
     }
 }

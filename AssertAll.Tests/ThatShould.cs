@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class ThatShould
+    public class ThatShould : TestBase
     {
         [TestMethod]
         public void PassWhenExtensionMethodPasses()
@@ -21,7 +19,7 @@ namespace AssertAll.Tests
         {
             AssertAll.That.TestMethod(false);
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
     }
 

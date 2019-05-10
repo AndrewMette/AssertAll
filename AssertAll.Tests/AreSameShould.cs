@@ -1,10 +1,10 @@
-using System;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class AreSameShould
+    public class AreSameShould : TestBase
     {
         [TestMethod]
         public void PassWhenSameReferences()
@@ -23,7 +23,7 @@ namespace AssertAll.Tests
 
             AssertAll.AreSame(object1, object2, "these are not the same");
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
     }
 }

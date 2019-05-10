@@ -1,10 +1,10 @@
-using System;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class IsTrueShould
+    public class IsTrueShould : TestBase
     {
         [TestMethod]
         public void PassWhenTrue()
@@ -19,7 +19,7 @@ namespace AssertAll.Tests
         {
             AssertAll.IsTrue(1 == 2, "1 and 2 are not the same ya dummy");
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
     }
 }

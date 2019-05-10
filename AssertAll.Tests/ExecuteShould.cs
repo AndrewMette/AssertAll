@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class ExecuteShould
+    public class ExecuteShould : TestBase
     {
         [TestMethod]
         public void PassWhenThereAreNoExceptionsOrInconclusives()
         {
             AssertAll.IsFalse(false);
-            AssertAll.AreEqual(1,1);
+            AssertAll.AreEqual(1, 1);
             AssertAll.IsInstanceOfType(1, typeof(int));
             AssertAll.Execute();
         }
@@ -24,7 +23,7 @@ namespace AssertAll.Tests
             AssertAll.IsFalse(false);
             AssertAll.AreEqual(1, 1);
             AssertAll.Inconclusive();
-            Assert.ThrowsException<AssertInconclusiveException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllInconclusiveException>(() => AssertAll.Execute());
         }
 
         [TestMethod]
@@ -33,7 +32,7 @@ namespace AssertAll.Tests
             AssertAll.IsFalse(false);
             AssertAll.Inconclusive();
             AssertAll.Fail();
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
 
         [TestMethod]
@@ -43,7 +42,7 @@ namespace AssertAll.Tests
             var message2 = RandomValue.String();
             var message3 = RandomValue.String();
 
-            AssertAll.IsTrue(true,message1);
+            AssertAll.IsTrue(true, message1);
             AssertAll.Fail(message2);
             AssertAll.Inconclusive(message3);
 
@@ -58,6 +57,41 @@ namespace AssertAll.Tests
                 Assert.IsTrue(message.Contains(message2));
                 Assert.IsTrue(message.Contains(message3));
             }
+        }
+
+        [TestMethod]
+        public void ModifyStackTraceOfException()
+        {
+            AssertAll.AreEqual(1, 2);
+            AssertAll.IsFalse(true);
+            AssertAll.IsNull(1);
+
+            var thrownException = Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 65"));
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 66"));
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 67"));
+        }
+
+        [TestMethod]
+        public void NotCareIfStructValueChanged()
+        {
+            var testBool = true;
+            AssertAll.IsTrue(testBool);
+            testBool = false;
+        }
+
+        [TestMethod]
+        public void NotCareIfClassValuesChanged()
+        {
+            var testInstance = new TestClass { Value = "stuff" };
+            AssertAll.IsNotNull(testInstance);
+            AssertAll.IsNotNull(testInstance?.Value);
+            testInstance = null;
+        }
+        public class TestClass
+        {
+            public object Value { get; set; }
         }
     }
 }

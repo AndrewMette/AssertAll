@@ -1,10 +1,10 @@
-using System;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class AreNotEqualShould
+    public class AreNotEqualShould : TestBase
     {
         [TestMethod]
         public void PassWhenNotEqual()
@@ -29,7 +29,7 @@ namespace AssertAll.Tests
         {
             AssertAll.AreNotEqual(1, 1, "1 and 1 are indeed the same");
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
     }
 }

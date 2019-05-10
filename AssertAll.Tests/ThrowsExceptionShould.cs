@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class ThrowsExceptionShould
+    public class ThrowsExceptionShould : TestBase
     {
         [TestMethod]
         public void PassWhenExceptionOfCorrectTypeIsThrown()
@@ -23,7 +24,7 @@ namespace AssertAll.Tests
             var list = new List<object>(){new object()};
             AssertAll.ThrowsException<InvalidOperationException>(() => list.Single());
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            var exception = Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
 
         [TestMethod]
@@ -32,7 +33,7 @@ namespace AssertAll.Tests
             var emptyList = new List<object>();
             AssertAll.ThrowsException<NullReferenceException>(() => emptyList.Single());
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            var exception = Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
     }
 }

@@ -1,10 +1,10 @@
-using System;
+using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests
 {
     [TestClass]
-    public class IsNullShould
+    public class IsNullShould : TestBase
     {
         [TestMethod]
         public void PassWhenNull()
@@ -18,7 +18,7 @@ namespace AssertAll.Tests
         {
             AssertAll.IsNull(1);
 
-            Assert.ThrowsException<AssertFailedException>(() => AssertAll.Execute());
+            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }
     }
 }
