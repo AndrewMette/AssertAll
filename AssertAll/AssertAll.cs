@@ -2,54 +2,76 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using AssertAll.Exceptions;
+using AssertAll.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [assembly:InternalsVisibleTo("AssertAll.Tests")]
 namespace AssertAll
 {
+    /// <summary>
+    /// Run all of your MSTest assert statements and have each failure message reported summarily.
+    /// </summary>
     public class AssertAll
     {
         #region Properties 
-        private static readonly Dictionary<string, List<Action>> MethodActions;
-        private static string Key
+
+        internal static bool ReadyForUsage = false;
+        internal static readonly List<AssertStatement> RegisteredAssertStatements;
+        private static TestInfo CurrentTestInfo
         {
             get
             {
-                var stackTrace = new StackTrace();
-                var frames = stackTrace.GetFrames()?.Where(x => x.GetMethod()?.DeclaringType?.Namespace?.StartsWith("System") == false
-                                                                && x.GetMethod()?.DeclaringType?.Namespace?.StartsWith("Microsoft") == false);
-                var method = frames?.Last().GetMethod();
-                var key = $"{method?.DeclaringType?.Namespace}.{method?.DeclaringType?.Name}.{method?.Name}";
-                return key;
+                var stackTrace = new StackTrace(true);
+
+                var frames = stackTrace.GetFrames()?
+                    .Where(x => x.GetMethod()?.DeclaringType?.Namespace?.StartsWith("System") == false
+                            && x.GetMethod()?.DeclaringType?.Namespace?.StartsWith("Microsoft") == false
+                            && x.GetMethod()?.DeclaringType?.Namespace != "AssertAll");
+
+                var frame = frames.Last();
+                var file = frame.GetFileName();
+                var lineNumber = frame.GetFileLineNumber();
+                var method = frame.GetMethod();
+
+                var nameSpace = method?.DeclaringType?.Namespace;
+                var currentTest = $"{nameSpace}.{method?.DeclaringType?.Name}.{method?.Name}";
+
+                return new TestInfo{File = file, LineNumber = lineNumber, TestName = currentTest};
             }
         }
+
         #endregion
 
         #region Constructor 
         static AssertAll()
         {
-            MethodActions = new Dictionary<string, List<Action>>();
+            RegisteredAssertStatements = new List<AssertStatement>();
         }
         #endregion
 
         #region Execute 
-        public static void Execute()
+        /// <summary>
+        /// Executes all the Assert statements that have been registered for the current test. Not calling this method will cause tests to pass erroneously.
+        /// </summary>
+        internal static void Execute()
         {
             var assertExceptions = new List<UnitTestAssertException>();
             var failure = false;
-            var actions = MethodActions.Where(x => x.Key == Key).SelectMany(x => x.Value);
-            foreach (var action in actions)
+            List<string> stackTraceItems = new List<string>();
+            foreach (var registeredAssertStatement in RegisteredAssertStatements)
             {
                 try
                 {
-                    action.Invoke();
+                    registeredAssertStatement.Action.Invoke();
                 }
                 catch (AssertFailedException e)
                 {
                     assertExceptions.Add(e);
+                    var stackTraceLine = $"at {registeredAssertStatement.TestName}() in {registeredAssertStatement.File}:line {registeredAssertStatement.LineNumber}";
+                    stackTraceItems.Add(stackTraceLine);
                     failure = true;
                 }
                 catch (AssertInconclusiveException e)
@@ -58,23 +80,36 @@ namespace AssertAll
                 }
             }
 
+            RegisteredAssertStatements.Clear();
+
             if (assertExceptions.Count > 0)
             {
-                var allMessages = assertExceptions.Select(x => x.Message);
-
-                var bigMessage = string.Join("; ", allMessages);
-
-                if (failure)
+                var allMessages = new List<string>();
+                var counter = 1;
+                foreach (var assertException in assertExceptions)
                 {
-                    throw new AssertFailedException(bigMessage);
+                    var replaced = assertException.Message.Replace("Assert.","AssertAll.");
+                    allMessages.Add($"({counter}) {replaced}");
+                    counter++;
                 }
 
-                throw new AssertInconclusiveException(bigMessage);
+                var bigMessage = string.Join(" ", allMessages);
+                var stackTrace = string.Join(Environment.NewLine, stackTraceItems);
+                
+                if (failure)
+                {
+                    throw new AssertAllFailedException(bigMessage, stackTrace);
+                }
+
+                throw new AssertAllInconclusiveException(bigMessage, stackTrace);
             }
         }
         #endregion
 
         #region Assert Methods 
+        /// <summary>
+        /// Tests whether the specified objects are equal and throws an exception if the two objects are not equal.Different numeric types are treated as unequal even if the logical values are equal. 42L is not equal to 42.
+        /// </summary>
         public static void AreEqual(object expected, object actual, string message = null)
         {
             if (message == null)
@@ -87,6 +122,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified objects are unequal and throws an exception if the two objects are equal. Different numeric types are treated as unequal even if the logical values are equal. 42L is not equal to 42.
+        /// </summary>
         public static void AreNotEqual(object notExpected, object actual, string message = null)
         {
             if (message == null)
@@ -99,6 +137,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified objects both refer to the same object and throws an exception if the two inputs do not refer to the same object.
+        /// </summary>
         public static void AreSame(object expected, object actual, string message = null)
         {
             if (message == null)
@@ -111,6 +152,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified objects refer to different objects and throws an exception if the two inputs refer to the same object.
+        /// </summary>
         public static void AreNotSame(object notExpected, object actual, string message = null)
         {
             if (message == null)
@@ -123,6 +167,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Throws an AssertFailedException.
+        /// </summary>
         public static void Fail(string message = null)
         {
             if (message == null)
@@ -135,6 +182,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Throws an AssertInconclusiveException.
+        /// </summary>
         public static void Inconclusive(string message = null)
         {
             if (message == null)
@@ -147,6 +197,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified object is an instance of the expected type and throws an exception if the expected type is not in the inheritance hierarchy of the object.
+        /// </summary>
         public static void IsInstanceOfType(object value, Type expectedType, string message = null)
         {
             if (message == null)
@@ -159,6 +212,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified object is not an instance of the wrong type and throws an exception if the specified type is in the inheritance hierarchy of the object.
+        /// </summary>
         public static void IsNotInstanceOfType(object value, Type wrongType, string message = null)
         {
             if (message == null)
@@ -171,6 +227,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified object is null and throws an exception if it is not.
+        /// </summary>
         public static void IsNull(object value, string message = null)
         {
             if (message == null)
@@ -183,6 +242,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified object is non-null and throws an exception if it is null.
+        /// </summary>
         public static void IsNotNull(object value, string message = null)
         {
             if (message == null)
@@ -195,6 +257,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified condition is true and throws an exception if the condition is false.
+        /// </summary>
         public static void IsTrue(bool condition, string message = null)
         {
             if (message == null)
@@ -207,6 +272,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the specified condition is false and throws an exception if the condition is true.
+        /// </summary>
         public static void IsFalse(bool condition, string message = null)
         {
             if (message == null)
@@ -218,7 +286,10 @@ namespace AssertAll
                 Register(() => Assert.IsFalse(condition, message));
             }
         }
-        
+
+        /// <summary>
+        /// Tests whether the code specified by delegate action throws exact given exception of type T (and not of derived type) and throws AssertFailedException if code does not throws exception or throws exception of type other than T.
+        /// </summary>
         public static void ThrowsException<T>(Action action, string message = null) where T : Exception
         {
             if (message == null)
@@ -231,6 +302,9 @@ namespace AssertAll
             }
         }
 
+        /// <summary>
+        /// Tests whether the code specified by delegate action throws exact given exception of type T (and not of derived type) and throws AssertFailedException if code does not throws exception or throws exception of type other than T.
+        /// </summary>
         internal static void ThrowsExceptionAsync<T>(Func<Task> action, string message = null) where T : Exception
         {
             if (message == null)
@@ -246,20 +320,28 @@ namespace AssertAll
 
         #region Singleton Instance For Extension Methods 
         private static AssertAll that;
+        /// <summary>
+        /// Gets the singleton instance of the AssertAll functionality.
+        /// </summary>
         public static AssertAll That => that ?? (that = new AssertAll());
         #endregion
 
         #region Private Methods 
-        private static void Register(Action action)
+        internal static void Register(Action action)
         {
-            if (MethodActions.ContainsKey(Key))
+            if (ReadyForUsage == false)
             {
-                MethodActions.Single(x => x.Key == Key).Value.Add(action);
+                throw new InvalidOperationException(
+                    "AssertAll statements can only be used in a test with the AssertAllTestMethod attribute");
             }
-            else
+
+            RegisteredAssertStatements.Add(new AssertStatement
             {
-                MethodActions.Add(Key, new List<Action> { action });
-            }
+                TestName = CurrentTestInfo.TestName,
+                File = CurrentTestInfo.File,
+                LineNumber = CurrentTestInfo.LineNumber,
+                Action = action
+            });
         }
         #endregion
     }
