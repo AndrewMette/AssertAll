@@ -26,7 +26,7 @@ namespace AssertAll
             var results = base.Execute(testMethod).ToList();
             var firstResult = results.First();
 
-            if (firstResult.TestFailureException?.InnerException is UnitTestAssertException)
+            if (firstResult.TestFailureException == null || firstResult.TestFailureException?.InnerException is UnitTestAssertException)
             {
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
