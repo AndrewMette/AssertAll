@@ -1,0 +1,9 @@
+
+.vs/*
+AssertAll.Consumer/*
+AssertAll.Sandbox/*
+*.user
+*.vspscc
+**/bin
+**/obj
+ToDo.txt

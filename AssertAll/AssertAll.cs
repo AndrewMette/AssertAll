@@ -18,7 +18,6 @@ namespace AssertAll
         internal static readonly List<AssertStatement> RegisteredAssertStatements;
         private static TestInfo CurrentTestInfo()
         {
-            
             var stackTrace = new StackTrace(true);
 
             var frames = stackTrace.GetFrames()?
