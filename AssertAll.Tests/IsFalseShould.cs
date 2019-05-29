@@ -17,7 +17,7 @@ namespace AssertAll.Tests
         [TestMethod]
         public void FailWhenTrue()
         {
-            AssertAll.IsFalse(1 == 1, "1 and 2 are the same");
+            AssertAll.IsFalse(true, "1 and 2 are the same");
 
             Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
         }

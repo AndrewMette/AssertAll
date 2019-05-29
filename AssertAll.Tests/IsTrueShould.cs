@@ -9,7 +9,7 @@ namespace AssertAll.Tests
         [TestMethod]
         public void PassWhenTrue()
         {
-            AssertAll.IsTrue(1 == 1, "1 and 1 are indeed the same");
+            AssertAll.IsTrue(true, "1 and 1 are indeed the same");
 
             AssertAll.Execute();
         }

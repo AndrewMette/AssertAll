@@ -6,18 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll
 {
-    /// <inheritdoc />
-    /// <summary>
-    /// The AssertAll test method attribute
-    /// </summary>
     public class AssertAllTestMethodAttribute : TestMethodAttribute
     {
-        /// <inheritdoc />
-        /// <summary>
-        /// Executes a test method
-        /// </summary>
-        /// <param name="testMethod"></param>
-        /// <returns></returns>
         public override TestResult[] Execute(ITestMethod testMethod)
         {
             AssertAll.ReadyForUsage = true;

@@ -5,7 +5,5 @@
         internal AssertAllInconclusiveException(string message, string stackTrace) : base(message, stackTrace)
         {
         }
-        
-        //public override string StackTrace => OldStackTrace;
     }
 }
