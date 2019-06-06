@@ -43,8 +43,7 @@ namespace AssertAll
                     RegisterAction(() => CollectionAssert.AllItemsAreInstancesOfType(collection, type, message));
                 }
             }
-
-
+            
             public static void AllItemsAreNotNull(ICollection collection, string message = null)
             {
                 if (message == null)
@@ -57,7 +56,6 @@ namespace AssertAll
                 }
             }
 
-
             public static void AllItemsAreUnique(ICollection collection, string message = null)
             {
                 if (message == null)
@@ -69,8 +67,7 @@ namespace AssertAll
                     RegisterAction(() => CollectionAssert.AllItemsAreUnique(collection, message));
                 }
             }
-
-
+            
             public static void AreEquivalent(ICollection expected, ICollection actual, string message = null)
             {
                 if (message == null)
@@ -85,7 +82,6 @@ namespace AssertAll
 
             public static void AreNotEquivalent(ICollection expected, ICollection actual, string message = null)
             {
-                //CollectionAssert.
                 if (message == null)
                 {
                     RegisterAction(() => CollectionAssert.AreNotEquivalent(expected, actual));
@@ -95,8 +91,7 @@ namespace AssertAll
                     RegisterAction(() => CollectionAssert.AreNotEquivalent(expected, actual, message));
                 }
             }
-
-
+            
             public static void Contains(ICollection collection, object element, string message = null)
             {
                 if (message == null)
@@ -120,8 +115,7 @@ namespace AssertAll
                     RegisterAction(() => CollectionAssert.DoesNotContain(collection, element, message));
                 }
             }
-
-
+            
             public static void IsSubsetOf(ICollection subset, ICollection superset, string message = null)
             {
                 if (message == null)

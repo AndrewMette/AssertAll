@@ -29,6 +29,19 @@ If both Assert and AssertAll statements fail, Visual Studio will display two res
 
 ![mixed_results](https://raw.githubusercontent.com/GroshfengTheBarbarian/AssertAll/master/images/mixed_results.png)
 
-Unresolved Issues
+Extension Methods using "That"
 ------
-I can't get ThrowsExceptionAsync to work correctly; the exception is thrown, but it's not being captured correctly. I'm relatively new to delegates, so I'm probably just missing something simple. Help here would be welcome
+Similar to the Assert class, AssertAll contains a singleton instance called "That" which allows you to write extension methods.
+
+Collections
+------
+Use the AssertAll.Collections static property to assert against collections of objects.  AssertAll.Collections also contains a singleton instance called "That" which allows you to write extension methods.
+
+Strings
+------
+Use the AssertAll.Strings static property to assert against two strings.  AssertAll.Strings also contains a singleton instance called "That" which allows you to write extension methods.
+
+Exception Testing
+------
+AssertAll methods must necessarily not return any object; thus, to test an exception for an inner exception, use AssertAll.ExceptionHasInnerException<T>.
+Similarly, to test that an exception message is equal to or contains a given string, use AssertAll.ExceptionMessageEquals and  AssertAll.ExceptionMessageContains, respectively.

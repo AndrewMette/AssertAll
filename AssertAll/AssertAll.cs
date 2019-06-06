@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using AssertAll.Exceptions;
+using AssertAll.ExtensionMethods;
 using AssertAll.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.Threading;
 
 [assembly:InternalsVisibleTo("AssertAll.Tests")]
 namespace AssertAll
@@ -70,7 +73,12 @@ namespace AssertAll
                     }
                     else
                     {
-                        registeredAssertStatement.Func.Invoke().GetAwaiter().GetResult();
+                        var context = new JoinableTaskContext();
+                        var factory = new JoinableTaskFactory(context);
+                        factory.Run(async delegate
+                        {
+                            await registeredAssertStatement.Func.Invoke();
+                        });
                     }
                 }
                 catch (AssertFailedException e)
@@ -278,7 +286,43 @@ namespace AssertAll
             }
         }
 
-        internal static void ThrowsExceptionAsync<T>(Func<Task> func, string message = null) where T : Exception
+        public static void ThrowsExceptionWithInnerException<T>(Action action, string message = null) where T : Exception
+        {
+            if (message == null)
+            {
+                RegisterAction(() => Assert.That.ThrowsExceptionWithInnerException<T>(action));
+            }
+            else
+            {
+                RegisterAction(() => Assert.That.ThrowsExceptionWithInnerException<T>(action, message));
+            }
+        }
+
+        public static void ExceptionMessageContains(Action action, string contains, string message = null)
+        {
+            if (message == null)
+            {
+                RegisterAction(() => Assert.That.ExceptionMessageContains(action, contains));
+            }
+            else
+            {
+                RegisterAction(() => Assert.That.ExceptionMessageContains(action, contains, message));
+            }
+        }
+
+        public static void ExceptionMessageEquals(Action action, string equals, string message = null)
+        {
+            if (message == null)
+            {
+                RegisterAction(() => Assert.That.ExceptionMessageEquals(action, equals));
+            }
+            else
+            {
+                RegisterAction(() => Assert.That.ExceptionMessageEquals(action, equals, message));
+            }
+        }
+
+        public static void ThrowsExceptionAsync<T>(Func<Task> func, string message = null) where T : Exception
         {
             if (message == null)
             {
@@ -287,6 +331,42 @@ namespace AssertAll
             else
             {
                 RegisterFunc(async () => await Assert.ThrowsExceptionAsync<T>(func, message));
+            }
+        }
+
+        public static void ThrowsExceptionWithInnerExceptionAsync<T>(Func<Task> func, string message = null) where T : Exception
+        {
+            if (message == null)
+            {
+                RegisterFunc(async () => await Assert.That.ThrowsExceptionWithInnerExceptionAsync<T>(func));
+            }
+            else
+            {
+                RegisterFunc(async () => await Assert.That.ThrowsExceptionWithInnerExceptionAsync<T>(func, message));
+            }
+        }
+
+        public static void ExceptionMessageContainsAsync(Func<Task> func, string contains, string message = null)
+        {
+            if (message == null)
+            {
+                RegisterFunc(async () => await Assert.That.ExceptionMessageContainsAsync(func, contains));
+            }
+            else
+            {
+                RegisterFunc(async () => await Assert.That.ExceptionMessageContainsAsync(func, contains, message));
+            }
+        }
+
+        public static void ExceptionMessageEqualsAsync(Func<Task> func, string equals, string message = null)
+        {
+            if (message == null)
+            {
+                RegisterFunc(async () => await Assert.That.ExceptionMessageEqualsAsync(func, equals));
+            }
+            else
+            {
+                RegisterFunc(async () => await Assert.That.ExceptionMessageEqualsAsync(func, equals, message));
             }
         }
 
@@ -335,8 +415,13 @@ namespace AssertAll
         }
         #endregion
 
-        public partial class Collections
+        public partial class Collections 
         {
+        }
+
+        public partial class Strings
+        {
+
         }
     }
 }

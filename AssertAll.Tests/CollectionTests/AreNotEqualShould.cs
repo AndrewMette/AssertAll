@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AssertAll.Exceptions;
+using AssertAll.Tests.AssertAllTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.Tests.CollectionTests

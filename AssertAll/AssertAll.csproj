@@ -15,8 +15,10 @@
     <Description>Run all of your MSTest assert statements and have each failure message reported summarily.</Description>
     <PackageTags>assert mstest unit test</PackageTags>
     <Copyright>2019 Andrew Mette</Copyright>
-    <Version>2.2.0</Version>
-    <PackageReleaseNotes>2.2.0 - Implemented CollectionAssert methods via the static Collections property of AssertAll</PackageReleaseNotes>
+    <Version>2.3.0</Version>
+    <PackageReleaseNotes>Finally implemented ThrowsExceptionAsync
+Implemented extension methods to test inner exception types and exception messages.
+Added static String class to AssertAll that wrap StringAssert methods.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/GroshfengTheBarbarian/AssertAll/master/AssertAll/logo.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/GroshfengTheBarbarian/AssertAll</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -24,10 +26,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\tfs\PDT\AssertAll\AssertAll\AssertAll.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.0.102" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
 

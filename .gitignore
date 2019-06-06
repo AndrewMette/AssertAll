@@ -1,7 +1,5 @@
 
 .vs/*
-AssertAll.Consumer/*
-AssertAll.Sandbox/*
 *.user
 *.vspscc
 **/bin

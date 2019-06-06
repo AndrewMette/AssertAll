@@ -9,12 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssertAll.Tests", "AssertAl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C65BACAD-8D1D-4708-8E0D-79A64372B53B}"
 	ProjectSection(SolutionItems) = preProject
+		images\invalid.png = images\invalid.png
+		images\mixed_example.png = images\mixed_example.png
+		images\mixed_results.png = images\mixed_results.png
+		README.md = README.md
+		images\test_example.png = images\test_example.png
+		images\test_results.png = images\test_results.png
 		ToDo.txt = ToDo.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssertAll.SandBox", "AssertAll.SandBox\AssertAll.SandBox.csproj", "{0FCDE235-6FDE-48D3-9549-6C5379FB0ED8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssertAll.Consumer", "AssertAll.Consumer\AssertAll.Consumer.csproj", "{E3FCDC7E-D28E-4BF3-96A0-8C02E9A6C334}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,33 +38,11 @@ Global
 		{0FCDE235-6FDE-48D3-9549-6C5379FB0ED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FCDE235-6FDE-48D3-9549-6C5379FB0ED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FCDE235-6FDE-48D3-9549-6C5379FB0ED8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3FCDC7E-D28E-4BF3-96A0-8C02E9A6C334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3FCDC7E-D28E-4BF3-96A0-8C02E9A6C334}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3FCDC7E-D28E-4BF3-96A0-8C02E9A6C334}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3FCDC7E-D28E-4BF3-96A0-8C02E9A6C334}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2862B0EA-15E5-4587-A289-05D0D93B8806}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.p.vu.local:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = AssertAll\\AssertAll.csproj
-		SccProjectName1 = AssertAll
-		SccLocalPath1 = AssertAll
-		SccProjectUniqueName2 = AssertAll.Tests\\AssertAll.Tests.csproj
-		SccProjectName2 = AssertAll.Tests
-		SccLocalPath2 = AssertAll.Tests
-		SccProjectUniqueName3 = AssertAll.SandBox\\AssertAll.SandBox.csproj
-		SccProjectName3 = AssertAll.SandBox
-		SccLocalPath3 = AssertAll.SandBox
-		SccProjectUniqueName4 = AssertAll.Consumer\\AssertAll.Consumer.csproj
-		SccProjectName4 = AssertAll.Consumer
-		SccLocalPath4 = AssertAll.Consumer
 	EndGlobalSection
 EndGlobal
