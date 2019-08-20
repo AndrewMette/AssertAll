@@ -15,14 +15,16 @@
     <Description>Run all of your MSTest assert statements and have each failure message reported summarily.</Description>
     <PackageTags>assert mstest unit test</PackageTags>
     <Copyright>2019 Andrew Mette</Copyright>
-    <Version>2.3.0</Version>
-    <PackageReleaseNotes>Finally implemented ThrowsExceptionAsync
-Implemented extension methods to test inner exception types and exception messages.
-Added static String class to AssertAll that wrap StringAssert methods.</PackageReleaseNotes>
+    <Version>3.0.0</Version>
+    <PackageReleaseNotes>Updated namespace to make sense.</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/GroshfengTheBarbarian/AssertAll/master/AssertAll/logo.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/GroshfengTheBarbarian/AssertAll</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://github.com/GroshfengTheBarbarian/AssertAll/blob/master/LICENSE</PackageLicenseUrl>
+    <RootNamespace>AssertAllNuget</RootNamespace>
+    <AssemblyName>AssertAll</AssemblyName>
+    <PackageId>AssertAll</PackageId>
+    <Product>AssertAll</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

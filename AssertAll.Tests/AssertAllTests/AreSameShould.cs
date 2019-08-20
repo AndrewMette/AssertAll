@@ -1,7 +1,8 @@
-using AssertAll.Exceptions;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll.Tests.AssertAllTests
+namespace AssertAllTests.AssertAllTests
 {
     [TestClass]
     public class AreSameShould : TestBase

@@ -1,6 +1,7 @@
+using AssertAllNuget;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll.Tests
+namespace AssertAllTests
 {
     public class TestBase
     {

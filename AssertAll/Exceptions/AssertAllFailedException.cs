@@ -1,4 +1,4 @@
-﻿namespace AssertAll.Exceptions
+﻿namespace AssertAllNuget.Exceptions
 {
     internal class AssertAllFailedException : AssertAllException
     {

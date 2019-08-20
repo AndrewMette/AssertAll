@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using AssertAllNuget;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AssertAll.SandBox
@@ -12,6 +10,7 @@ namespace AssertAll.SandBox
         public void Test1()
         {
             // your code here
+            //AssertAll.Fail();
         }
     }
 }

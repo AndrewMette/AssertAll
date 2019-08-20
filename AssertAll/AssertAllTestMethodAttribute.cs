@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AssertAll.Exceptions;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll
+namespace AssertAllNuget
 {
     public class AssertAllTestMethodAttribute : TestMethodAttribute
     {

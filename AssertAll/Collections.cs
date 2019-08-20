@@ -2,7 +2,7 @@
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll
+namespace AssertAllNuget
 {
     public partial class AssertAll
     {

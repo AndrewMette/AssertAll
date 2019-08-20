@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AssertAll.Exceptions;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
-namespace AssertAll.Tests.ExtensionMethodTests
+namespace AssertAllTests.ExtensionMethodTests
 {
     [TestClass]
     public class ExceptionHasInnerExceptionAsyncShould : TestBase

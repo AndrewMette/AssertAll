@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AssertAll.Exceptions;
+﻿using System.Text.RegularExpressions;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
-namespace AssertAll.Tests.StringTests
+namespace AssertAllTests.StringTests
 {
     [TestClass]
     public class MatchesShould : TestBase

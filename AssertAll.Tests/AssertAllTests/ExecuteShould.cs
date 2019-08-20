@@ -1,9 +1,10 @@
 ﻿using System;
-using AssertAll.Exceptions;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
-namespace AssertAll.Tests.AssertAllTests
+namespace AssertAllTests.AssertAllTests
 {
     [TestClass]
     public class ExecuteShould : TestBase
@@ -68,9 +69,9 @@ namespace AssertAll.Tests.AssertAllTests
 
             var thrownException = Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
 
-            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 65"));
-            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 66"));
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 66"), thrownException.StackTrace);
             Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 67"));
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 68"));
         }
 
         [TestMethod]

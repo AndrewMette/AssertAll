@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AssertAll.Exceptions;
+﻿using System.Text.RegularExpressions;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
-namespace AssertAll.Tests.StringTests
+namespace AssertAllTests.StringTests
 {
     [TestClass]
     public class DoesNotMatchShould : TestBase
@@ -25,7 +23,7 @@ namespace AssertAll.Tests.StringTests
         public void FailWhenMatches()
         {
             var someString = RandomValue.Int().ToString();
-            var pattern = new Regex("[0-1]");
+            var pattern = new Regex("[0-9]");
             AssertAll.Strings.DoesNotMatch(someString, pattern);
 
             Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());

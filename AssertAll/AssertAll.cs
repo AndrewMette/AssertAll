@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
-using AssertAll.Exceptions;
-using AssertAll.ExtensionMethods;
-using AssertAll.Models;
+using AssertAllNuget.Exceptions;
+using AssertAllNuget.ExtensionMethods;
+using AssertAllNuget.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.Threading;
 
-[assembly:InternalsVisibleTo("AssertAll.Tests")]
-namespace AssertAll
+[assembly:InternalsVisibleTo("AssertAllTests")]
+namespace AssertAllNuget
 {
     public partial class AssertAll
     {
@@ -26,7 +25,7 @@ namespace AssertAll
             var frames = stackTrace.GetFrames()?
                 .Where(x => x.GetMethod().DeclaringType?.Namespace?.StartsWith("System") == false
                             && x.GetMethod().DeclaringType?.Namespace?.StartsWith("Microsoft") == false
-                            && x.GetMethod().DeclaringType?.Namespace != "AssertAll"
+                            && x.GetMethod().DeclaringType?.Namespace != "AssertAllNuget"
                             && x.GetMethod().IsStatic);
 
             if (frames.Any() == false)
@@ -34,7 +33,7 @@ namespace AssertAll
                 frames = stackTrace.GetFrames()?
                     .Where(x => x.GetMethod().DeclaringType?.Namespace?.StartsWith("System") == false
                                 && x.GetMethod().DeclaringType?.Namespace?.StartsWith("Microsoft") == false
-                                && x.GetMethod().DeclaringType?.Namespace != "AssertAll");
+                                && x.GetMethod().DeclaringType?.Namespace != "AssertAllNuget");
             }
             
             var frame = frames.Last();

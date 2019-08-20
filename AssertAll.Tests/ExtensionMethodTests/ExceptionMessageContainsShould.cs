@@ -1,10 +1,10 @@
 ﻿using System;
-using AssertAll.Exceptions;
-using AssertAll.Tests.AssertAllTests;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
-namespace AssertAll.Tests.ExtensionMethodTests
+namespace AssertAllTests.ExtensionMethodTests
 {
     [TestClass]
     public class ExceptionMessageContainsShould : TestBase

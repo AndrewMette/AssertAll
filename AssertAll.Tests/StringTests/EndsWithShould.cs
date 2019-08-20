@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssertAll.Exceptions;
+﻿using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
-namespace AssertAll.Tests.StringTests
+namespace AssertAllTests.StringTests
 {
     [TestClass]
     public class EndsWithShould : TestBase

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace AssertAll.Models
+namespace AssertAllNuget.Models
 {
     internal class AssertStatement
     {

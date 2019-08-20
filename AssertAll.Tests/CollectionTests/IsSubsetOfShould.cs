@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using AssertAll.Exceptions;
-using AssertAll.Tests.AssertAllTests;
+using AssertAllNuget;
+using AssertAllNuget.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll.Tests.CollectionTests
+namespace AssertAllTests.CollectionTests
 {
     [TestClass]
     public class IsSubsetOfShould : TestBase

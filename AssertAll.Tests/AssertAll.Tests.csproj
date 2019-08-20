@@ -11,6 +11,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>AssertAllTests</AssemblyName>
+
+    <RootNamespace>AssertAllTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +30,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AssertAll\AssertAll.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AssertAll">
+      <HintPath>..\..\..\..\.nuget\packages\assertall\3.0.0\lib\netstandard2.0\AssertAll.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace AssertAll.Models
+﻿namespace AssertAllNuget.Models
 {
     internal class TestInfo
     {

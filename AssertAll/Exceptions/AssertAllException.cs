@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll.Exceptions
+namespace AssertAllNuget.Exceptions
 {
     internal class AssertAllException : AssertFailedException
     {

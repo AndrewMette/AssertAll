@@ -1,7 +1,8 @@
 ﻿using System;
+using AssertAllNuget;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll.Tests.AssertAllTests
+namespace AssertAllTests.AssertAllTests
 {
     [TestClass]
     public class RegisterShould

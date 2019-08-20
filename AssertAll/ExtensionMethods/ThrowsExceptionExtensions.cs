@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using AssertAll.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AssertAll.ExtensionMethods
+namespace AssertAllNuget.ExtensionMethods
 {
     internal static class ThrowsExceptionExtensions
     {
