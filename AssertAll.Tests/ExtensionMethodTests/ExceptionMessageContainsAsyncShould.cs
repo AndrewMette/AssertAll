@@ -25,22 +25,34 @@ namespace AssertAllTests.ExtensionMethodTests
         public void FailWhenExceptionMessageDoesNotContainArgument()
         {
             var doesNotContain = RandomValue.String();
-            var message = RandomValue.String();
-            AssertAll.ExceptionMessageContainsAsync(async () => await ThrowExceptionWithMessage(message),
-                doesNotContain);
+            var exceptionMessage = RandomValue.String();
+            string assertFailureMessage = "unexpected exception message";
+            AssertAll.ExceptionMessageContainsAsync(async () => await ThrowExceptionWithMessage(exceptionMessage),
+                doesNotContain, assertFailureMessage);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ExceptionMessageContainsAsync failed. {exceptionMessage} does not contain {doesNotContain}. {assertFailureMessage}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
         [TestMethod]
         public void FailWhenExceptionIsNotThrown()
         {
             var doesNotContain = RandomValue.String();
-            var message = RandomValue.String();
-            AssertAll.ExceptionMessageContainsAsync(async () => await ThrowExceptionWithMessage(message, false),
-                doesNotContain);
+            var exceptionMessage = RandomValue.String();
+            string assertFailureMessage = "missing exception";
+            AssertAll.ExceptionMessageContainsAsync(async () => await ThrowExceptionWithMessage(exceptionMessage, false),
+                doesNotContain, assertFailureMessage);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ExceptionMessageContainsAsync failed. No exception thrown. {assertFailureMessage}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
         private async Task ThrowExceptionWithMessage(string message, bool shouldThrow = true)

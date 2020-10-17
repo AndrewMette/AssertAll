@@ -13,9 +13,13 @@ namespace AssertAllTests.CollectionTests
         {
             var list1 = new List<string> {"1"};
             var list2 = new List<string> {"1", "2"};
-            AssertAll.Collections.AreEquivalent(list1, list2);
+            string message = "list items are different";
+            AssertAll.Collections.AreEquivalent(list1, list2, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Collections.AreEquivalent", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
 
         [TestMethod]

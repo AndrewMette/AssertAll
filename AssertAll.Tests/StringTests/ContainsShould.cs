@@ -22,9 +22,13 @@ namespace AssertAllTests.StringTests
         [TestMethod]
         public void FailWhenDoesNotContain()
         {
-            AssertAll.Strings.Contains(RandomValue.String(), RandomValue.String());
+            string message = "substring not found";
+            AssertAll.Strings.Contains(RandomValue.String(), RandomValue.String(), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Strings.Contains", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, $"{message}.", "Failure message missing or followed by unexpected text");
         }
     }
 }

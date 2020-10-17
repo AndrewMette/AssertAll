@@ -12,9 +12,13 @@ namespace AssertAllTests.CollectionTests
         public void FailWhenNotOfType()
         {
             var list1 = new List<string> {"1"};
-            AssertAll.Collections.AllItemsAreInstancesOfType(list1, typeof(char));
+            string message = "list contains items of wrong type";
+            AssertAll.Collections.AllItemsAreInstancesOfType(list1, typeof(char), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Collections.AllItemsAreInstancesOfType", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
 
         [TestMethod]
@@ -29,9 +33,13 @@ namespace AssertAllTests.CollectionTests
         public void FailWhenParentType()
         {
             var list1 = new List<ParentType> { new ParentType() };
-            AssertAll.Collections.AllItemsAreInstancesOfType(list1, typeof(ChildType));
+            string message = "list contains items of wrong type";
+            AssertAll.Collections.AllItemsAreInstancesOfType(list1, typeof(ChildType), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Collections.AllItemsAreInstancesOfType", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
 
         [TestMethod]

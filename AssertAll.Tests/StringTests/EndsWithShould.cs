@@ -24,10 +24,14 @@ namespace AssertAllTests.StringTests
         {
             var value = RandomValue.String();
             var substring = RandomValue.String();
+            string message = "string doesn't end with";
 
-            AssertAll.Strings.EndsWith(value, substring);
+            AssertAll.Strings.EndsWith(value, substring, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Strings.EndsWith", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, $"{message}.", "Failure message missing or followed by unexpected text");
         }
     }
 }

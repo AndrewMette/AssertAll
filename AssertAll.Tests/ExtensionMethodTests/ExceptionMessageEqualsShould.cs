@@ -23,22 +23,34 @@ namespace AssertAllTests.ExtensionMethodTests
         public void FailWhenExceptionMessageDoesNotEqualArgument()
         {
             var notEqual = RandomValue.String();
-            var message = RandomValue.String();
-            AssertAll.ExceptionMessageEquals(() => ThrowExceptionWithMessage(message),
-                notEqual);
+            var exceptionMessage = RandomValue.String();
+            string assertFailureMessage = "unexpected exception message";
+            AssertAll.ExceptionMessageEquals(() => ThrowExceptionWithMessage(exceptionMessage),
+                notEqual, assertFailureMessage);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ExceptionMessageEquals failed. Expected message: {notEqual} Actual message: {exceptionMessage}. {assertFailureMessage}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
         [TestMethod]
         public void FailWhenExceptionIsNotThrown()
         {
             var notEqual = RandomValue.String();
-            var message = RandomValue.String();
-            AssertAll.ExceptionMessageEquals(() => ThrowExceptionWithMessage(message, false),
-                notEqual);
+            var exceptionMessage = RandomValue.String();
+            string assertFailureMessage = "missing exception";
+            AssertAll.ExceptionMessageEquals(() => ThrowExceptionWithMessage(exceptionMessage, false),
+                notEqual, assertFailureMessage);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ExceptionMessageEquals failed. No exception thrown. {assertFailureMessage}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
         private void ThrowExceptionWithMessage(string message, bool shouldThrow = true)

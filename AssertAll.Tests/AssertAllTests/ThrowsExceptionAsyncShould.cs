@@ -19,17 +19,25 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void FailWhenNoExceptionIsThrown()
         {
-            AssertAll.ThrowsExceptionAsync<NotImplementedException>(async () => await ThrowContrivedException(false));
+            string message = "exception not thrown";
+            AssertAll.ThrowsExceptionAsync<NotImplementedException>(async () => await ThrowContrivedException(false), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.ThrowsException", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
 
         [TestMethod]
         public void FailWhenWrongExceptionIsThrown()
         {
-            AssertAll.ThrowsExceptionAsync<NullReferenceException>(async () => await ThrowContrivedException(true));
+            string message = "incorrect exception thrown";
+            AssertAll.ThrowsExceptionAsync<NullReferenceException>(async () => await ThrowContrivedException(true), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.ThrowsException", "Failure message assertion name was not altered");
+            StringAssert.Contains(ex.Message, $"{message}{Environment.NewLine}Exception Message:", "Failure message missing or followed by unexpected text");
         }
 
         private static async Task ThrowContrivedException(bool throwException)

@@ -10,7 +10,7 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void PassWhenTrue()
         {
-            AssertAll.IsTrue(true, "1 and 1 are indeed the same");
+            AssertAll.IsTrue(true, "oh dear, true is no longer true");
 
             AssertAll.Execute();
         }
@@ -18,9 +18,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void FailWhenFalse()
         {
-            AssertAll.IsTrue(1 == 2, "1 and 2 are not the same ya dummy");
+            string message = "1 and 2 are not the same ya dummy";
+            AssertAll.IsTrue(1 == 2, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.IsTrue", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
     }
 }

@@ -76,7 +76,7 @@ namespace AssertAllNuget.ExtensionMethods
 
             if (thrownException.Message != equals)
             {
-                throw new AssertFailedException($"Assert.ExceptionMessageEquals failed. Actual message: {thrownException.Message}. {message}");
+                throw new AssertFailedException($"Assert.ExceptionMessageEquals failed. Expected message: {equals} Actual message: {thrownException.Message}. {message}");
             }
         }
 
@@ -150,7 +150,7 @@ namespace AssertAllNuget.ExtensionMethods
 
             if (thrownException.Message != equals)
             {
-                throw new AssertFailedException($"Assert.ExceptionMessageEqualsAsync failed. Actual message: {thrownException.Message}. {message}");
+                throw new AssertFailedException($"Assert.ExceptionMessageEqualsAsync failed. Expected message: {equals} Actual message: {thrownException.Message}. {message}");
             }
         }
     }

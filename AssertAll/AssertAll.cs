@@ -107,6 +107,10 @@ namespace AssertAllNuget
                     {
                         replaced = assertException.Message.Replace("CollectionAssert.", "AssertAll.Collections.");
                     }
+                    else if(assertException.Message.Contains("StringAssert"))
+                    {
+                        replaced = assertException.Message.Replace("StringAssert.", "AssertAll.Strings.");
+                    }
                     else
                     {
                         replaced = assertException.Message.Replace("Assert.", "AssertAll.");
@@ -115,7 +119,7 @@ namespace AssertAllNuget
                     counter++;
                 }
 
-                var bigMessage = string.Join(" ", allMessages);
+                var bigMessage = string.Join(Environment.NewLine, allMessages);
                 var stackTrace = string.Join(Environment.NewLine, stackTraceItems);
                 
                 if (failure)
@@ -173,7 +177,7 @@ namespace AssertAllNuget
             }
             else
             {
-                RegisterAction(() => Assert.AreNotSame(notExpected, actual));
+                RegisterAction(() => Assert.AreNotSame(notExpected, actual, message));
             }
         }
 

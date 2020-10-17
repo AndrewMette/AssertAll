@@ -24,9 +24,13 @@ namespace AssertAllTests.StringTests
         {
             var someString = RandomValue.Int().ToString();
             var pattern = new Regex("[0-9]");
-            AssertAll.Strings.DoesNotMatch(someString, pattern);
+            string message = "strings match";
+            AssertAll.Strings.DoesNotMatch(someString, pattern, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Strings.DoesNotMatch", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, $"{message}.", "Failure message missing or followed by unexpected text");
         }
     }
 }

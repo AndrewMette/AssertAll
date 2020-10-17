@@ -17,9 +17,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void FailWhenTypesAreNotTheSame()
         {
-            AssertAll.IsNotInstanceOfType(1, typeof(int));
+            string message = "an int is an int";
+            AssertAll.IsNotInstanceOfType(1, typeof(int), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.IsNotInstanceOfType", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
     }
 }

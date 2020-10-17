@@ -23,29 +23,46 @@ namespace AssertAllTests.ExtensionMethodTests
         [TestMethod]
         public void FailWhenInnerExceptionIsNotCorrectType()
         {
+            string message = "unexpected inner exception";
             AssertAll.ThrowsExceptionWithInnerExceptionAsync<ArgumentException>(async () =>
-                await ThrowExceptionWithInnerInvalidOperationException(true));
+                await ThrowExceptionWithInnerInvalidOperationException(true), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(
+                    ex.Message,
+                    $"(1) AssertAll.ThrowsExceptionWithInnerExceptionAsync failed. Threw exception System.InvalidOperationException, but inner exception System.ArgumentException was expected. {message}\r\n",
+                    "Unexpected failure message");
         }
 
         [TestMethod]
         public void FailWhenNoExceptionIsThrown()
         {
-            var list = new List<object>() { new object() };
+            string message = "missing exception";
             AssertAll.ThrowsExceptionWithInnerExceptionAsync<InvalidOperationException>(async () =>
-                ThrowExceptionWithInnerInvalidOperationException(false));
+                await ThrowExceptionWithInnerInvalidOperationException(false), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ThrowsExceptionWithInnerExceptionAsync failed. No exception thrown. InvalidOperationException inner exception was expected. {message}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
         [TestMethod]
         public void FailWhenInnerExceptionIsNull()
         {
+            string message = "missing inner exception";
             AssertAll.ThrowsExceptionWithInnerExceptionAsync<ArgumentException>(async () => 
-                await ThrowNewException());
+                await ThrowNewException(), message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ThrowsExceptionWithInnerExceptionAsync failed. Thrown exception has no inner exception. ArgumentException inner exception was expected. {message}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
 

@@ -12,9 +12,13 @@ namespace AssertAllTests.CollectionTests
         public void FailWhenItemsNotUnique()
         {
             var list1 = new List<string> {"1", "1"};
-            AssertAll.Collections.AllItemsAreUnique(list1);
+            string message = "list contains duplicate items";
+            AssertAll.Collections.AllItemsAreUnique(list1, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Collections.AllItemsAreUnique", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
 
         [TestMethod]

@@ -18,9 +18,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void FailWhenTrue()
         {
-            AssertAll.IsFalse(true, "1 and 2 are the same");
+            string message = "true is false, Winston";
+            AssertAll.IsFalse(true, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.IsFalse", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
     }
 }

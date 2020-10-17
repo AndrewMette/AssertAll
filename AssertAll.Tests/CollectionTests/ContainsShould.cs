@@ -12,9 +12,13 @@ namespace AssertAllTests.CollectionTests
         public void FailWhenDoesNotContain()
         {
             var list1 = new List<string> {"1", "2"};
-            AssertAll.Collections.Contains(list1, "3");
+            string message = "item not found in list";
+            AssertAll.Collections.Contains(list1, "3", message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Collections.Contains", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
 
         [TestMethod]

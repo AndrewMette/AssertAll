@@ -17,9 +17,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void FailWhenNotNull()
         {
-            AssertAll.IsNotNull(null);
+            string message = "value is null";
+            AssertAll.IsNotNull(null, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.IsNotNull", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
     }
 }
