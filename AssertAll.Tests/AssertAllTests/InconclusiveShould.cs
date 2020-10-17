@@ -10,9 +10,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void ThrowAssertInconclusiveException()
         {
-            AssertAll.Inconclusive("the test is inconclusive");
+            string message = "the test is inconclusive";
+            AssertAll.Inconclusive(message);
 
-            Assert.ThrowsException<AssertAllInconclusiveException>(() => AssertAll.Execute());
+            AssertAllInconclusiveException ex =
+                    Assert.ThrowsException<AssertAllInconclusiveException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Inconclusive", "Warning message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Warning message missing or followed by unexpected text");
         }
     }
 }

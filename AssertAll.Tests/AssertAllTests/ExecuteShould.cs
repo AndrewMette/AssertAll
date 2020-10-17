@@ -1,6 +1,7 @@
 ﻿using System;
 using AssertAllNuget;
 using AssertAllNuget.Exceptions;
+using AssertAllTests.ExtensionMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RandomTestValues;
 
@@ -24,7 +25,8 @@ namespace AssertAllTests.AssertAllTests
             AssertAll.IsFalse(false);
             AssertAll.AreEqual(1, 1);
             AssertAll.Inconclusive();
-            Assert.ThrowsException<AssertAllInconclusiveException>(() => AssertAll.Execute());
+            AssertAllInconclusiveException ex =
+                    Assert.ThrowsException<AssertAllInconclusiveException>(() => AssertAll.Execute());
         }
 
         [TestMethod]
@@ -37,7 +39,7 @@ namespace AssertAllTests.AssertAllTests
         }
 
         [TestMethod]
-        public void AllFailureAndInconclusiveMessagesAreIncluded()
+        public void IncludeAllFailureAndInconclusiveMessagesOnTheirOwnLine()
         {
             var message1 = RandomValue.String();
             var message2 = RandomValue.String();
@@ -47,19 +49,19 @@ namespace AssertAllTests.AssertAllTests
             AssertAll.Fail(message2);
             AssertAll.Inconclusive(message3);
 
-            try
-            {
-                AssertAll.Execute();
-            }
-            catch (Exception e)
-            {
-                var message = e.Message;
-                Assert.IsFalse(message.Contains(message1));
-                Assert.IsTrue(message.Contains(message2));
-                Assert.IsTrue(message.Contains(message3));
-            }
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+
+            string[] messageLines = ex.Message.Split(Environment.NewLine);
+
+            Assert.That.ArrayLacksStringContaining(message1, messageLines, message: "Unexpected message from passed assertion found in results");
+            Assert.That.ArrayHasDiscreteStringsContaining(
+                    new string[] { message2, message3},
+                    messageLines,
+                    message: "Messages from failed assertions are missing or do not appear on their own lines");
         }
 
+        //TODO: Brittle test, possibly mislabelled or is testing incomplete feature
         [TestMethod]
         public void ModifyStackTraceOfException()
         {
@@ -69,9 +71,10 @@ namespace AssertAllTests.AssertAllTests
 
             var thrownException = Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
 
-            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 66"), thrownException.StackTrace);
-            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 67"));
-            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 68"));
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 68"), thrownException.StackTrace);
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 69"));
+            Assert.IsTrue(thrownException.StackTrace.ToLower().Contains("line 70"));
+            Assert.Inconclusive("This test is sensitive to unrelated class changes, and may be incomplete");
         }
 
         [TestMethod]

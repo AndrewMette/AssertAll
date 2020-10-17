@@ -10,9 +10,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void Fail()
         {
-            AssertAll.Fail();
+            string message = "forced failure";
+            AssertAll.Fail(message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Fail", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
     }
 }

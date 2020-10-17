@@ -24,10 +24,14 @@ namespace AssertAllTests.StringTests
         {
             var value = RandomValue.String();
             var differentValue = RandomValue.String();
+            string message = "string doesn't start with";
 
-            AssertAll.Strings.StartsWith(value, differentValue);
+            AssertAll.Strings.StartsWith(value, differentValue, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.Strings.StartsWith", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, $"{message}.", "Failure message missing or followed by unexpected text");
         }
     }
 }

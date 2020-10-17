@@ -28,9 +28,13 @@ namespace AssertAllTests.AssertAllTests
         [TestMethod]
         public void FailWhenEqual()
         {
-            AssertAll.AreNotEqual(1, 1, "1 and 1 are indeed the same");
+            string message = "1 and 1 are indeed the same";
+            AssertAll.AreNotEqual(1, 1, message);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            StringAssert.StartsWith(ex.Message, $"(1) AssertAll.AreNotEqual", "Failure message assertion name was not altered");
+            StringAssert.EndsWith(ex.Message, message, "Failure message missing or followed by unexpected text");
         }
     }
 }

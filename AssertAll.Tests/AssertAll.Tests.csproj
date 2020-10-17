@@ -32,10 +32,4 @@
     <ProjectReference Include="..\AssertAll\AssertAll.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="AssertAll">
-      <HintPath>..\..\..\..\.nuget\packages\assertall\3.0.0\lib\netstandard2.0\AssertAll.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

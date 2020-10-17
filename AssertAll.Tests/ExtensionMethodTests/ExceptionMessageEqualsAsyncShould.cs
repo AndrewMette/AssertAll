@@ -24,11 +24,17 @@ namespace AssertAllTests.ExtensionMethodTests
         public void FailWhenExceptionMessageDoesNotEqualArgument()
         {
             var notEqual = RandomValue.String();
-            var message = RandomValue.String();
-            AssertAll.ExceptionMessageEqualsAsync(async () => await ThrowExceptionWithMessage(message),
-                notEqual);
+            var exceptionMessage = RandomValue.String();
+            string assertFailureMessage = "unexpected exception message";
+            AssertAll.ExceptionMessageEqualsAsync(async () => await ThrowExceptionWithMessage(exceptionMessage),
+                notEqual, assertFailureMessage);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ExceptionMessageEqualsAsync failed. Expected message: {notEqual} Actual message: {exceptionMessage}. {assertFailureMessage}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
         
         [TestMethod]
@@ -36,10 +42,16 @@ namespace AssertAllTests.ExtensionMethodTests
         {
             var notEqual = RandomValue.String();
             var message = RandomValue.String();
+            string assertFailureMessage = "missing exception";
             AssertAll.ExceptionMessageEqualsAsync(() => ThrowExceptionWithMessage(message, false),
-                notEqual);
+                notEqual, assertFailureMessage);
 
-            Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            AssertAllFailedException ex =
+                    Assert.ThrowsException<AssertAllFailedException>(() => AssertAll.Execute());
+            Assert.AreEqual(
+                    $"(1) AssertAll.ExceptionMessageEqualsAsync failed. No exception thrown. {assertFailureMessage}",
+                    ex.Message,
+                    "Unexpected failure message");
         }
 
         private async Task ThrowExceptionWithMessage(string message, bool shouldThrow = true)
