@@ -142,7 +142,7 @@ namespace AssertAllNuget
 
             #region Singleton Instance For Extension Methods 
             private static Collections _that;
-            public static Collections That => _that ?? (_that = new Collections());
+            public static Collections That => _that ??= new Collections();
             #endregion
         }
     }

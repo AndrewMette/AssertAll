@@ -111,7 +111,7 @@ namespace AssertAllNuget
                     {
                         replaced = assertException.Message.Replace("Assert.", "AssertAll.");
                     }
-                    allMessages.Add($"({counter}) {replaced}");
+                    allMessages.Add($"({counter}) {replaced}{Environment.NewLine}");
                     counter++;
                 }
 
@@ -373,7 +373,7 @@ namespace AssertAllNuget
 
         #region Singleton Instance For Extension Methods 
         private static AssertAll _that;
-        public static AssertAll That => _that ?? (_that = new AssertAll());
+        public static AssertAll That => _that ??= new AssertAll();
         #endregion
 
         #region Private Methods 
